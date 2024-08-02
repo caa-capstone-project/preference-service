@@ -8,23 +8,21 @@ app = Flask(__name__)
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')  # Replace 'your-region' with your actual region
 table = dynamodb.Table('Preferences')
 
-@app.route('/store_preference', methods=['POST'])
+@app.route('/preference', methods=['POST'])
 def store_preference():
     try:
         data = request.get_json()
+        print("Request: ", data)   
         user_id = data.get('userId')
-        genres = data.get('Genres')
-        tags = data.get('Tags')
-        print(user_id, genres, tags)
-        if not user_id or not genres or not tags:
-            return jsonify({'error': 'Missing userId, Genres or Tags'}), 400
+        genres = data.get('genres')
+        if not user_id or not genres:
+            return jsonify({'error': 'Missing userId or genres'}), 400
 
         # Put item into DynamoDB table
         table.put_item(
             Item={
                 'userId': user_id,
-                'Genres': set(genres),
-                'Tags': set(tags)
+                'Genres': genres
             }
         )
 
