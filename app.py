@@ -13,16 +13,20 @@ def store_preference():
     try:
         data = request.get_json()
         print("Request: ", data)   
-        user_id = data.get('userId')
+        userId = data.get('userId')
         genres = data.get('genres')
-        if not user_id or not genres:
-            return jsonify({'error': 'Missing userId or genres'}), 400
+        languages = data.get('languages')
+        years = data.get('years')
+        if not userId or not genres or not languages or not years:
+            return jsonify({'error': 'Invalid request'}), 400
 
         # Put item into DynamoDB table
         table.put_item(
             Item={
-                'userId': user_id,
-                'Genres': genres
+                'userId': userId,
+                'genres': genres,
+                'languages': languages,
+                'years': years
             }
         )
 
