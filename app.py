@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import boto3
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 
 app = Flask(__name__)
+CORS(app)
 
 # Initialize the DynamoDB client
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')  # Replace 'your-region' with your actual region
