@@ -8,7 +8,7 @@ CORS(app)
 
 # Initialize the DynamoDB client
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')  # Replace 'your-region' with your actual region
-table = dynamodb.Table('Preferences')
+table = dynamodb.Table('preference')
 
 @app.route('/preference', methods=['POST'])
 def store_preference():
@@ -45,8 +45,6 @@ def store_preference():
 @app.route('/preference/<string:userId>', methods=['GET'])
 def get_preference(userId):
     try:
-        userId = int(userId)  # Convert userId to a number
-
         response = table.get_item(
             Key={
                 'userId': userId
